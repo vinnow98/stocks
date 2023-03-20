@@ -1,0 +1,26 @@
+const apiKey = "Y4U1QKUSSCFJGG5YP";
+
+const symbols = ["AAPL", "GOOGL", "MSFT", "AMZN"]; // Replace with your own list of symbols
+
+for (let i = 0; i < symbols.length; i++) {
+  const symbol = symbols[i];
+  fetch(
+    `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data["Error Message"]) {
+        console.error(
+          `Error retrieving data for ${symbol}: ${data["Error Message"]}`
+        );
+        return;
+      }
+      const price = data["Global Quote"]["05. price"];
+      const stockPriceDiv = document.createElement("div");
+      stockPriceDiv.textContent = `${symbol}: ${price}`;
+      document.body.appendChild(stockPriceDiv);
+    })
+    .catch((error) => {
+      console.error(`Error retrieving data for ${symbol}: ${error}`);
+    });
+}
